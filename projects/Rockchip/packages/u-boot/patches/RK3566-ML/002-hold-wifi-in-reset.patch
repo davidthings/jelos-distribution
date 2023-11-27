@@ -1,0 +1,44 @@
+From a15d65edf4a9ba06c14e48b1e708e0a58d953806 Mon Sep 17 00:00:00 2001
+From: Chris Morgan <macromorgan@hotmail.com>
+Date: Mon, 27 Nov 2023 11:34:09 -0600
+Subject: [PATCH] board: anbernic: rgxx3: Force WiFi into reset status
+
+Some users report issues using the wifi when loading U-Boot with the
+BSP SPL stage (sadly unavoidable for some users).
+
+Trigger the reset GPIO (active low) to forcibly reset the wifi
+and keep it reset until Linux probes the driver.
+
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+---
+ board/anbernic/rgxx3_rk3566/rgxx3-rk3566.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/board/anbernic/rgxx3_rk3566/rgxx3-rk3566.c b/board/anbernic/rgxx3_rk3566/rgxx3-rk3566.c
+index 3f1a42d184..b00cfe59f0 100644
+--- a/board/anbernic/rgxx3_rk3566/rgxx3-rk3566.c
++++ b/board/anbernic/rgxx3_rk3566/rgxx3-rk3566.c
+@@ -27,6 +27,7 @@
+ #define GPIO_SWPORT_DDR_L	0x0008
+ #define GPIO_SWPORT_DDR_H	0x000c
+ #define GPIO_A0			BIT(0)
++#define GPIO_A2			BIT(2)
+ #define GPIO_C5			BIT(5)
+ #define GPIO_C6			BIT(6)
+ #define GPIO_C7			BIT(7)
+@@ -395,6 +396,13 @@ int rk_board_late_init(void)
+ 	if (IS_ENABLED(CONFIG_DM_PWM))
+ 		startup_buzz();
+
++   printf( "FORCING WIFI RESET\n" ); 
++	/* Force WiFi into reset status. */
++	writel(GPIO_WRITEMASK(GPIO_A2) | GPIO_A2,
++	       (GPIO4_BASE + GPIO_SWPORT_DDR_H));
++	writel(GPIO_WRITEMASK(GPIO_A2),
++	       (GPIO4_BASE + GPIO_SWPORT_DR_H));
++
+ 	return 0;
+ }
+ 
+-- 
+2.34.1

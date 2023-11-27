@@ -1,0 +1,12 @@
+diff -rupN arch/arm64/boot/dts/rockchip/rk3566-anbernic-rgxx3_orig.dtsi arch/arm64/boot/dts/rockchip/rk3566-anbernic-rgxx3.dtsi
+--- linux-6.6/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rgxx3.dtsi	2023-11-27 11:25:28.334849467 -0800
++++ linux-6.6/arch/arm64/boot/dts/rockchip/rk3566-anbernic-rgxx3.dtsi	2023-11-27 11:25:28.334849467 -0800
+@@ -224,7 +224,7 @@
+ 		clock-names = "ext_clock";
+ 		pinctrl-0 = <&wifi_enable_h>;
+ 		pinctrl-names = "default";
+-		post-power-on-delay-ms = <200>;
++		post-power-on-delay-ms = <800>;
+ 		reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_LOW>;
+ 	};
+ 
